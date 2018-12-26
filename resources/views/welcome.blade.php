@@ -9,7 +9,15 @@
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
-
+        <style type="text/css">
+            ul{
+                margin: 0; padding: 0;
+            }
+            ul li{
+                list-style: none;
+                margin-bottom: 10px;
+            }
+        </style>
         <script type="text/javascript">
             $(document).ready(function(){
                 var list_arr = [];
@@ -32,8 +40,9 @@
                             console.log(data);
                             if(data.status)
                             {
-                                // console.log($.parseHTML(data.data.item));
                                 $('ul#todo-lists').append($.parseHTML(data.data.item));
+                                $('#todo_add').val('');
+
                             }
                         }
                     })
@@ -43,8 +52,8 @@
                     e.preventDefault();
                 })
 
-                $('ul#todo-lists').on('click', 'li.todo-list', function() {
-                    var clickId = $(this).children().attr('value');
+                $('ul#todo-lists').on('click', 'li.todo-list input', function(evt) {
+                    var clickId = $(this).attr('value');
                     $indexId = list_arr.indexOf(clickId);
                     if( $indexId >= 0){
                         list_arr.splice($indexId, 1);
@@ -106,11 +115,15 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <form action="<?php echo route('todoCreate')?>" method="post" id="todo">
+                    <form action="<?php echo route('todoCreate')?>" method="post" id="todo" class="form-inline">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <input type="text" class="form-control" id="todo_add" name="todo" placeholder="To do list">
                         <?php echo csrf_field(); ?>
-                        <input type="text" name="todo">
+                        <!-- <input type="text" name="todo" class="form-control"> -->
                         <input type="hidden" name="todo_val" value="">
-                        <button type="submit">Add</button>
+
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Add</button>
                     </form>
                 </div>
             </div>
